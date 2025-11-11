@@ -1,0 +1,10 @@
+{
+  "name": "ecmascript",
+  "version": "0.0.1",
+  "license": "MIT",
+  "author": "Philip Kazakov",
+  "type": "module",
+  "scripts": {
+    "test": "node --test"
+  }
+}
