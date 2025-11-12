@@ -13,3 +13,21 @@ export class Binding {
     this.flags = flags;
   }
 }
+
+export class IndirectBinding {
+  #moduleRecord;
+  #name;
+
+  constructor(moduleRecord, name) {
+    this.#moduleRecord = moduleRecord;
+    this.#name = name;
+  }
+
+  get moduleRecord() {
+    return this.#moduleRecord;
+  }
+
+  get name() {
+    return this.#name;
+  }
+}
