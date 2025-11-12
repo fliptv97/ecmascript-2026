@@ -56,7 +56,7 @@ export class FunctionEnvironmentRecord extends DeclarativeEnvironmentRecord {
   // https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#sec-function-environment-records-hassuperbinding
   hasSuperBinding() {
     if (this.thisBindingStatus === ThisBindingStatus.LEXICAL) {
-      return false;
+      return normalCompletion(false);
     }
 
     return normalCompletion(this.functionObject.homeObject !== undefined);
