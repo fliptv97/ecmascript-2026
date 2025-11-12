@@ -1,4 +1,4 @@
-import { DeclarativeEnvironmentRecord } from "./declarative-environment-record";
+import { DeclarativeEnvironmentRecord } from "./declarative-environment-record.ts";
 
 /* A Module Environment Record contains the bindings for the top-level
 declarations of a Module. It also contains the bindings that are explicitly

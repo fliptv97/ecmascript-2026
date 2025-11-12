@@ -1,19 +1,20 @@
 import assert from "node:assert";
-import { Binding, Flags as BindingFlags } from "../binding.js";
-import { normalCompletion, throwCompletion } from "../completion-record.js";
-import { UNDEF, UNUSED } from "../constants.js";
-import { hasFlag } from "../utils.js";
-import { EnvironmentRecord } from "./environment-record.js";
+import { Binding, Flags as BindingFlags } from "../binding.ts";
+import { normalCompletion, throwCompletion } from "../completion-record.ts";
+import { UNDEF, UNUSED } from "../constants.ts";
+import { hasFlag } from "../utils.ts";
+import { EnvironmentRecord } from "./environment-record.ts";
 
 /* A Declarative Environment Record is used to define the effect of ECMAScript
 language syntactic elements such as FunctionDeclarations, VariableDeclarations,
 and Catch clauses that directly associate identifier bindings with ECMAScript
 language values. */
 export class DeclarativeEnvironmentRecord extends EnvironmentRecord {
-  // https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#sec-newdeclarativeenvironment
-  constructor(outerEnv) {
-    assert(outerEnv instanceof EnvironmentRecord || outerEnv === null);
+  _bindings: Map<string, Binding<any> | null>;
+  outerEnv: EnvironmentRecord | null;
 
+  // https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#sec-newdeclarativeenvironment
+  constructor(outerEnv: EnvironmentRecord | null) {
     super();
 
     this._bindings = new Map();
@@ -21,17 +22,12 @@ export class DeclarativeEnvironmentRecord extends EnvironmentRecord {
   }
 
   // https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#sec-declarative-environment-records-hasbinding-n
-  hasBinding(name) {
-    assert(typeof name == "string");
-
+  hasBinding(name: string) {
     return normalCompletion(this._bindings.has(name));
   }
 
   // https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#sec-declarative-environment-records-createmutablebinding-n-d
-  createMutableBinding(name, d) {
-    assert(typeof name == "string");
-    assert(typeof d == "boolean");
-
+  createMutableBinding(name: string, d: boolean) {
     assert(!this._bindings.has(name));
 
     const binding = new Binding(
@@ -49,7 +45,7 @@ export class DeclarativeEnvironmentRecord extends EnvironmentRecord {
   }
 
   // https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#sec-declarative-environment-records-createimmutablebinding-n-s
-  createImmutableBinding(name, isStrict) {
+  createImmutableBinding(name: string, isStrict: boolean) {
     assert(typeof name == "string");
     assert(typeof isStrict == "boolean");
 
@@ -67,11 +63,10 @@ export class DeclarativeEnvironmentRecord extends EnvironmentRecord {
   }
 
   // https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#sec-declarative-environment-records-initializebinding-n-v
-  initializeBinding(name, value) {
-    assert(typeof name == "string");
+  initializeBinding<T>(name: string, value: T) {
     assert(this._bindings.has(name));
 
-    const binding = this._bindings.get(name);
+    const binding = this._bindings.get(name)!;
 
     assert(hasFlag(binding.flags, BindingFlags.UNINITIALIZED));
 
@@ -82,10 +77,7 @@ export class DeclarativeEnvironmentRecord extends EnvironmentRecord {
   }
 
   // https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#sec-declarative-environment-records-setmutablebinding-n-v-s
-  setMutableBinding(name, value, isStrict) {
-    assert(typeof name == "string");
-    assert(typeof isStrict == "boolean");
-
+  setMutableBinding<T>(name: string, value: T, isStrict: boolean) {
     if (!this._bindings.has(name)) {
       if (isStrict) {
         return throwCompletion(new ReferenceError());
@@ -97,7 +89,7 @@ export class DeclarativeEnvironmentRecord extends EnvironmentRecord {
       return normalCompletion(UNUSED);
     }
 
-    const binding = this._bindings.get(name);
+    const binding = this._bindings.get(name)!;
 
     if (hasFlag(binding.flags, BindingFlags.STRICT)) {
       isStrict = true;
@@ -108,7 +100,7 @@ export class DeclarativeEnvironmentRecord extends EnvironmentRecord {
     } else if (hasFlag(binding.flags, BindingFlags.MUTABLE)) {
       binding.value = value;
     } else {
-      assert(!hasFlag(BindingFlags.MUTABLE));
+      assert(!hasFlag(binding.flags, BindingFlags.MUTABLE));
 
       if (isStrict) {
         return throwCompletion(new TypeError());
@@ -119,13 +111,10 @@ export class DeclarativeEnvironmentRecord extends EnvironmentRecord {
   }
 
   // https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#sec-declarative-environment-records-getbindingvalue-n-s
-  getBindingValue(name, isStrict) {
-    assert(typeof name == "string");
-    assert(typeof isStrict == "boolean");
-
+  getBindingValue(name: string, _isStrict: boolean) {
     assert(this._bindings.has(name));
 
-    const binding = this._bindings.get(name);
+    const binding = this._bindings.get(name)!;
 
     if (hasFlag(binding.flags, BindingFlags.UNINITIALIZED)) {
       throw throwCompletion(new ReferenceError());
@@ -135,10 +124,10 @@ export class DeclarativeEnvironmentRecord extends EnvironmentRecord {
   }
 
   // https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#sec-declarative-environment-records-deletebinding-n
-  deleteBinding(name) {
+  deleteBinding(name: string) {
     assert(this._bindings.has(name));
 
-    const binding = this._bindings.get(name);
+    const binding = this._bindings.get(name)!;
 
     if (!hasFlag(binding.flags, BindingFlags.DELETABLE)) {
       return normalCompletion(false);
@@ -151,16 +140,16 @@ export class DeclarativeEnvironmentRecord extends EnvironmentRecord {
 
   // https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#sec-declarative-environment-records-hasthisbinding
   hasThisBinding() {
-    return false;
+    return normalCompletion(false);
   }
 
   // https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#sec-declarative-environment-records-hassuperbinding
   hasSuperBinding() {
-    return false;
+    return normalCompletion(false);
   }
 
   // https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#sec-declarative-environment-records-withbaseobject
   withBaseObject() {
-    return undefined;
+    return normalCompletion(undefined);
   }
 }

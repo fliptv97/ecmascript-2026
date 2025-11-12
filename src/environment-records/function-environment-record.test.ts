@@ -3,10 +3,10 @@ import assert from "node:assert";
 import {
   CompletionRecord,
   Type as CompletionRecordType,
-} from "../completion-record.js";
-import { Function_, ThisMode as FunctionThisMode } from "../stubs/function.js";
-import { FunctionEnvironmentRecord } from "./function-environment-record.js";
-import { UNUSED } from "../constants.js";
+} from "../completion-record.ts";
+import { Function_, ThisMode as FunctionThisMode } from "../stubs/function.ts";
+import { FunctionEnvironmentRecord } from "./function-environment-record.ts";
+import { UNUSED } from "../constants.ts";
 
 describe("Function Environment Record", () => {
   describe("bindThisValue", () => {
