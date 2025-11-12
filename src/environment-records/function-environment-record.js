@@ -8,42 +8,38 @@ export const ThisBindingStatus = {
   UNINITIALIZED: "UNINITIALIZED",
 };
 
-// https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#sec-bindthisvalue
-export function bindThisValue(envRec, value) {
-  assert(envRec instanceof FunctionEnvironmentRecord);
-  assert(envRec._thisBindingStatus != ThisBindingStatus.LEXICAL);
-
-  if (envRec._thisBindingStatus == ThisBindingStatus.INITIALIZED) {
-    return throwCompletion(new ReferenceError());
-  }
-
-  envRec._thisValue = value;
-  envRec._thisBindingStatus = ThisBindingStatus.INITIALIZED;
-
-  return normalCompletion(UNUSED);
-}
-
-// https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#sec-getsuperbase
-export function getSuperBase(envRec) {
-  assert(envRec instanceof FunctionEnvironmentRecord);
-
-  const home = envRec.functionObject.homeObject;
-
-  if (home === undefined) {
-    return undefined;
-  }
-
-  assert(typeof home == "object");
-
-  return home.getPrototypeOf();
-}
+class Function_ {}
 
 // https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#sec-function-environment-records
 export class FunctionEnvironmentRecord extends DeclarativeEnvironmentRecord {
-  thisValue = UNDEF;
-  thisBindingStatus = UNDEF;
-  functionObject = UNDEF;
-  newTarget = UNDEF;
+  // https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#sec-newfunctionenvironment
+  constructor(F, newTarget) {
+    assert(F instanceof Function_);
+    assert(typeof newTarget == "object" || newTarget === undefined);
+
+    this.functionObject = F;
+
+    this.thisBindingStatus =
+      F.thisMode == "LEXICAL"
+        ? ThisBindingStatus.LEXICAL
+        : ThisBindingStatus.UNINITIALIZED;
+    this.newTarget = newTarget;
+    this.outerEnv = F.environment;
+  }
+
+  // https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#sec-bindthisvalue
+  bindThisValue(value) {
+    assert(this.thisBindingStatus != ThisBindingStatus.LEXICAL);
+
+    if (this.thisBindingStatus == ThisBindingStatus.INITIALIZED) {
+      return throwCompletion(new ReferenceError());
+    }
+
+    this.thisValue = value;
+    this.thisBindingStatus = ThisBindingStatus.INITIALIZED;
+
+    return normalCompletion(UNUSED);
+  }
 
   // https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#sec-function-environment-records-hasthisbinding
   hasThisBinding() {
@@ -70,5 +66,18 @@ export class FunctionEnvironmentRecord extends DeclarativeEnvironmentRecord {
     }
 
     return normalCompletion(this.thisValue);
+  }
+
+  // https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#sec-getsuperbase
+  getSuperBase() {
+    const home = this.functionObject.homeObject;
+
+    if (home === undefined) {
+      return undefined;
+    }
+
+    assert(typeof home == "object");
+
+    return home.getPrototypeOf();
   }
 }
