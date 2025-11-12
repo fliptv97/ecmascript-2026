@@ -1,6 +1,8 @@
-import { normalCompletion, throwCompletion } from "../completion-record";
-import { UNDEF, UNUSED } from "../constants";
-import { DeclarativeEnvironmentRecord } from "./declarative-environment-record";
+import assert from "node:assert";
+import { normalCompletion, throwCompletion } from "../completion-record.js";
+import { UNUSED } from "../constants.js";
+import { Function_, ThisMode as FunctionThisMode } from "../stubs/function.js";
+import { DeclarativeEnvironmentRecord } from "./declarative-environment-record.js";
 
 export const ThisBindingStatus = {
   LEXICAL: "LEXICAL",
@@ -8,23 +10,26 @@ export const ThisBindingStatus = {
   UNINITIALIZED: "UNINITIALIZED",
 };
 
-class Function_ {}
-
 // https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#sec-function-environment-records
 export class FunctionEnvironmentRecord extends DeclarativeEnvironmentRecord {
-  // https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#sec-newfunctionenvironment
+  /**
+   * https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#sec-newfunctionenvironment
+   * @param {Function_} F
+   * @param {Object | undefined} newTarget
+   */
   constructor(F, newTarget) {
     assert(F instanceof Function_);
     assert(typeof newTarget == "object" || newTarget === undefined);
 
+    super(F.environment);
+
     this.functionObject = F;
 
     this.thisBindingStatus =
-      F.thisMode == "LEXICAL"
+      F.thisMode == FunctionThisMode.LEXICAL
         ? ThisBindingStatus.LEXICAL
         : ThisBindingStatus.UNINITIALIZED;
     this.newTarget = newTarget;
-    this.outerEnv = F.environment;
   }
 
   // https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#sec-bindthisvalue
