@@ -10,7 +10,15 @@ language syntactic elements such as FunctionDeclarations, VariableDeclarations,
 and Catch clauses that directly associate identifier bindings with ECMAScript
 language values. */
 export class DeclarativeEnvironmentRecord extends EnvironmentRecord {
-  _bindings = new Map();
+  // https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#sec-newdeclarativeenvironment
+  constructor(outerEnv) {
+    assert(outerEnv instanceof EnvironmentRecord || outerEnv === null);
+
+    super();
+
+    this._bindings = new Map();
+    this.outerEnv = outerEnv;
+  }
 
   // https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#sec-declarative-environment-records-hasbinding-n
   hasBinding(name) {

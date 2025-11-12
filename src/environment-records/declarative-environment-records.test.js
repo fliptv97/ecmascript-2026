@@ -10,7 +10,7 @@ import { DeclarativeEnvironmentRecord } from "./declarative-environment-record.j
 describe("DeclarativeEnvironmentRecord", () => {
   it("should properly create mutable (non-deletable) binding ", () => {
     const ident = "ident";
-    const envRec = new DeclarativeEnvironmentRecord();
+    const envRec = new DeclarativeEnvironmentRecord(null);
 
     const opResult = envRec.createMutableBinding(ident, false);
 
@@ -29,7 +29,7 @@ describe("DeclarativeEnvironmentRecord", () => {
 
   it("should properly create mutable (deletable) binding ", () => {
     const ident = "ident";
-    const envRec = new DeclarativeEnvironmentRecord();
+    const envRec = new DeclarativeEnvironmentRecord(null);
 
     envRec.createMutableBinding(ident, true);
 
