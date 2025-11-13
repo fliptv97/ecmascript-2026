@@ -15,6 +15,7 @@ export class DeclarativeEnvironment extends Environment {
 
     super();
 
+    // NOTE: Sadly, JavaScript doesn't provide ways to create `protected` fields
     this._bindings = new Map();
     this.#outerEnv = outerEnv;
   }
