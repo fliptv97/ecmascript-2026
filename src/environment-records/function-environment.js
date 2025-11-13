@@ -4,11 +4,11 @@ import { UNUSED } from "../constants.js";
 import { Function_, ThisMode as FunctionThisMode } from "../stubs/function.js";
 import { DeclarativeEnvironment } from "./declarative-environment.js";
 
-export const ThisBindingStatus = {
+export const ThisBindingStatus = Object.freeze({
   LEXICAL: "LEXICAL",
   INITIALIZED: "INITIALIZED",
   UNINITIALIZED: "UNINITIALIZED",
-};
+});
 
 // https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#sec-function-environment-records
 export class FunctionEnvironment extends DeclarativeEnvironment {
