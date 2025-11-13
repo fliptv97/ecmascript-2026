@@ -12,13 +12,13 @@ export function returnCompletion(value) {
   return new Completion(Type.RETURN, value, EMPTY);
 }
 
-export const Type = {
+export const Type = Object.freeze({
   BREAK: "BREAK",
   CONTINUE: "CONTINUE",
   NORMAL: "NORMAL",
   RETURN: "RETURN",
   THROW: "THROW",
-};
+});
 
 // https://tc39.es/ecma262/multipage/ecmascript-data-types-and-values.html#sec-completion-record-specification-type
 export class Completion {
