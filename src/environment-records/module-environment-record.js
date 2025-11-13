@@ -1,7 +1,9 @@
+import assert from "node:assert";
 import { Flags as BindingFlags, IndirectBinding } from "../binding.js";
 import { normalCompletion, throwCompletion } from "../completion-record.js";
 import { EMPTY, UNUSED } from "../constants.js";
 import { ModuleRecord } from "../module-record.js";
+import { hasFlag } from "../utils.js";
 import { DeclarativeEnvironmentRecord } from "./declarative-environment-record.js";
 
 // https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#sec-module-environment-records
@@ -16,7 +18,7 @@ export class ModuleEnvironmentRecord extends DeclarativeEnvironmentRecord {
     const binding = this._bindings.get(name);
 
     if (binding instanceof IndirectBinding) {
-      const targetEnv = binding.moduleRecord;
+      const targetEnv = binding.moduleRecord.environment;
 
       if (targetEnv == EMPTY) {
         return throwCompletion(new ReferenceError());
