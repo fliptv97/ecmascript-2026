@@ -21,11 +21,6 @@ export class Environment {
   withBaseObject() {}
 }
 
-/* An Object Environment Record is used to define the effect of ECMAScript
-elements such as WithStatement that associate identifier bindings with
-the properties of some object. */
-class ObjectEnvironment extends Environment {}
-
 /* A Global Environment Record is used for Script global declarations.
 It does not have an outer environment; its [[OuterEnv]] is null.
 It may be prepopulated with identifier bindings and it includes an associated
