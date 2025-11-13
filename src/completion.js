@@ -1,15 +1,15 @@
 import { EMPTY } from "./constants.js";
 
 export function normalCompletion(value) {
-  return new CompletionRecord(Type.NORMAL, value, EMPTY);
+  return new Completion(Type.NORMAL, value, EMPTY);
 }
 
 export function throwCompletion(value) {
-  return new CompletionRecord(Type.THROW, value, EMPTY);
+  return new Completion(Type.THROW, value, EMPTY);
 }
 
 export function returnCompletion(value) {
-  return new CompletionRecord(Type.RETURN, value, EMPTY);
+  return new Completion(Type.RETURN, value, EMPTY);
 }
 
 export const Type = {
@@ -21,7 +21,7 @@ export const Type = {
 };
 
 // https://tc39.es/ecma262/multipage/ecmascript-data-types-and-values.html#sec-completion-record-specification-type
-export class CompletionRecord {
+export class Completion {
   constructor(type, value, target) {
     if (!Object.hasOwn(Type, type)) {
       throw new TypeError(
@@ -29,8 +29,8 @@ export class CompletionRecord {
       );
     }
 
-    if (value instanceof CompletionRecord) {
-      throw new TypeError("value can't be of type CompletionRecord");
+    if (value instanceof Completion) {
+      throw new TypeError("value can't be of type Completion");
     }
 
     if (typeof target != "string" && target !== EMPTY) {

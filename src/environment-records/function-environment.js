@@ -1,8 +1,8 @@
 import assert from "node:assert";
-import { normalCompletion, throwCompletion } from "../completion-record.js";
+import { normalCompletion, throwCompletion } from "../completion.js";
 import { UNUSED } from "../constants.js";
 import { Function_, ThisMode as FunctionThisMode } from "../stubs/function.js";
-import { DeclarativeEnvironmentRecord } from "./declarative-environment-record.js";
+import { DeclarativeEnvironment } from "./declarative-environment.js";
 
 export const ThisBindingStatus = {
   LEXICAL: "LEXICAL",
@@ -11,12 +11,8 @@ export const ThisBindingStatus = {
 };
 
 // https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#sec-function-environment-records
-export class FunctionEnvironmentRecord extends DeclarativeEnvironmentRecord {
-  /**
-   * https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#sec-newfunctionenvironment
-   * @param {Function_} F
-   * @param {Object | undefined} newTarget
-   */
+export class FunctionEnvironment extends DeclarativeEnvironment {
+  // https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#sec-newfunctionenvironment
   constructor(F, newTarget) {
     assert(F instanceof Function_);
     assert(typeof newTarget == "object" || newTarget === undefined);
