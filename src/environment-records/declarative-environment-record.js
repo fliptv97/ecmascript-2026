@@ -61,7 +61,7 @@ export class DeclarativeEnvironmentRecord extends EnvironmentRecord {
       binding.flags |= BindingFlags.STRICT;
     }
 
-    this._bindings.set(name, null);
+    this._bindings.set(name, binding);
 
     return normalCompletion(UNUSED);
   }
