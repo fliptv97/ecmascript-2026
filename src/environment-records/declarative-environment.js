@@ -7,6 +7,8 @@ import { Environment } from "./environment.js";
 
 // https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#sec-declarative-environment-records
 export class DeclarativeEnvironment extends Environment {
+  #outerEnv;
+
   // https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#sec-newdeclarativeenvironment
   constructor(outerEnv) {
     assert(outerEnv instanceof Environment || outerEnv === null);
@@ -14,7 +16,7 @@ export class DeclarativeEnvironment extends Environment {
     super();
 
     this._bindings = new Map();
-    this.outerEnv = outerEnv;
+    this.#outerEnv = outerEnv;
   }
 
   // https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#sec-declarative-environment-records-hasbinding-n
