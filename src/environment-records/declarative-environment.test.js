@@ -1,20 +1,19 @@
-import { describe, it } from "node:test";
 import assert from "node:assert";
-
+import { describe, it } from "node:test";
 import { Flags as BindingFlags } from "../binding.js";
-import { CompletionRecord, Type } from "../completion-record.js";
+import { Completion, Type } from "../completion.js";
 import { UNUSED } from "../constants.js";
 import { hasFlag } from "../utils.js";
-import { DeclarativeEnvironmentRecord } from "./declarative-environment-record.js";
+import { DeclarativeEnvironment } from "./declarative-environment.js";
 
-describe("DeclarativeEnvironmentRecord", () => {
+describe("DeclarativeEnvironment", () => {
   it("should properly create mutable (non-deletable) binding ", () => {
     const ident = "ident";
-    const envRec = new DeclarativeEnvironmentRecord(null);
+    const envRec = new DeclarativeEnvironment(null);
 
     const opResult = envRec.createMutableBinding(ident, false);
 
-    assert(opResult instanceof CompletionRecord);
+    assert(opResult instanceof Completion);
     assert(opResult.type == Type.NORMAL);
     assert(opResult.value === UNUSED);
 
@@ -29,7 +28,7 @@ describe("DeclarativeEnvironmentRecord", () => {
 
   it("should properly create mutable (deletable) binding ", () => {
     const ident = "ident";
-    const envRec = new DeclarativeEnvironmentRecord(null);
+    const envRec = new DeclarativeEnvironment(null);
 
     envRec.createMutableBinding(ident, true);
 

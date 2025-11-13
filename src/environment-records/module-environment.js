@@ -1,13 +1,13 @@
 import assert from "node:assert";
 import { Flags as BindingFlags, IndirectBinding } from "../binding.js";
-import { normalCompletion, throwCompletion } from "../completion-record.js";
+import { normalCompletion, throwCompletion } from "../completion.js";
 import { EMPTY, UNUSED } from "../constants.js";
-import { ModuleRecord } from "../module-record.js";
+import { Module } from "../module.js";
 import { hasFlag } from "../utils.js";
-import { DeclarativeEnvironmentRecord } from "./declarative-environment-record.js";
+import { DeclarativeEnvironment } from "./declarative-environment.js";
 
 // https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#sec-module-environment-records
-export class ModuleEnvironmentRecord extends DeclarativeEnvironmentRecord {
+export class ModuleEnvironment extends DeclarativeEnvironment {
   getBindingValue(name, isStrict) {
     assert(typeof name == "string");
     assert(typeof isStrict == "boolean");
@@ -50,7 +50,7 @@ export class ModuleEnvironmentRecord extends DeclarativeEnvironmentRecord {
   // https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#sec-createimportbinding
   createImportBinding(name, moduleRecord, name2) {
     assert(typeof name == "string");
-    assert(moduleRecord instanceof ModuleRecord);
+    assert(moduleRecord instanceof Module);
     assert(typeof name2 == "string");
 
     assert(!this._bindings.has(name));

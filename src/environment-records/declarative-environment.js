@@ -1,18 +1,15 @@
 import assert from "node:assert";
 import { Binding, Flags as BindingFlags } from "../binding.js";
-import { normalCompletion, throwCompletion } from "../completion-record.js";
+import { normalCompletion, throwCompletion } from "../completion.js";
 import { UNDEF, UNUSED } from "../constants.js";
 import { hasFlag } from "../utils.js";
-import { EnvironmentRecord } from "./environment-record.js";
+import { Environment } from "./environment.js";
 
-/* A Declarative Environment Record is used to define the effect of ECMAScript
-language syntactic elements such as FunctionDeclarations, VariableDeclarations,
-and Catch clauses that directly associate identifier bindings with ECMAScript
-language values. */
-export class DeclarativeEnvironmentRecord extends EnvironmentRecord {
+// https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#sec-declarative-environment-records
+export class DeclarativeEnvironment extends Environment {
   // https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#sec-newdeclarativeenvironment
   constructor(outerEnv) {
-    assert(outerEnv instanceof EnvironmentRecord || outerEnv === null);
+    assert(outerEnv instanceof Environment || outerEnv === null);
 
     super();
 

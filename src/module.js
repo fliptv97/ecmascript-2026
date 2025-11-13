@@ -1,5 +1,5 @@
 // https://tc39.es/ecma262/multipage/ecmascript-language-scripts-and-modules.html#sec-abstract-module-records
-export class ModuleRecord {
+export class Module {
   #environment;
 
   constructor(environment) {
