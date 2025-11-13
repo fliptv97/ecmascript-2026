@@ -22,6 +22,10 @@ export const Type = Object.freeze({
 
 // https://tc39.es/ecma262/multipage/ecmascript-data-types-and-values.html#sec-completion-record-specification-type
 export class Completion {
+  #type;
+  #value;
+  #target;
+
   constructor(type, value, target) {
     if (!Object.hasOwn(Type, type)) {
       throw new TypeError(
@@ -37,8 +41,20 @@ export class Completion {
       throw new TypeError("target should be a string or an EMPTY");
     }
 
-    this.type = type;
-    this.value = value;
-    this.target = target;
+    this.#type = type;
+    this.#value = value;
+    this.#target = target;
+  }
+
+  get type() {
+    return this.#type;
+  }
+
+  get value() {
+    return this.#value;
+  }
+
+  get target() {
+    return this.#target;
   }
 }
