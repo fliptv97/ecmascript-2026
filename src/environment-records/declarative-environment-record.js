@@ -108,7 +108,7 @@ export class DeclarativeEnvironmentRecord extends EnvironmentRecord {
     } else if (hasFlag(binding.flags, BindingFlags.MUTABLE)) {
       binding.value = value;
     } else {
-      assert(!hasFlag(BindingFlags.MUTABLE));
+      assert(!hasFlag(binding.flags, BindingFlags.MUTABLE));
 
       if (isStrict) {
         return throwCompletion(new TypeError());
