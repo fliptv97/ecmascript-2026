@@ -7,6 +7,7 @@ import { Environment } from "./environment.js";
 export class ObjectEnvironment extends Environment {
   #bindingObject;
   #isWithEnvironment;
+  // biome-ignore lint/correctness/noUnusedPrivateClassMembers: will be used in future
   #outerEnv;
 
   // https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#sec-newobjectenvironment
@@ -16,8 +17,8 @@ export class ObjectEnvironment extends Environment {
    * @param {Environment} outerEnv
    */
   constructor(bindingObject, isWithEnvironment, outerEnv) {
-    assert(typeof bindingObject == "object" && bindingObject != null);
-    assert(typeof isWithEnvironment == "boolean");
+    assert(typeof bindingObject === "object" && bindingObject != null);
+    assert(typeof isWithEnvironment === "boolean");
     assert(outerEnv instanceof Environment || outerEnv === null);
 
     super();
@@ -29,7 +30,7 @@ export class ObjectEnvironment extends Environment {
 
   // https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#sec-object-environment-records-hasbinding-n
   hasBinding(name) {
-    assert(typeof name == "string");
+    assert(typeof name === "string");
 
     const bindingObject = this.#bindingObject;
     const foundBinding = name in bindingObject;
@@ -44,7 +45,7 @@ export class ObjectEnvironment extends Environment {
 
     const unscopables = bindingObject[Symbol.unscopables];
 
-    if (typeof unscopables == "object" && unscopables != null) {
+    if (typeof unscopables === "object" && unscopables != null) {
       const blocked = Boolean(unscopables[name]);
 
       if (blocked) {
@@ -57,8 +58,8 @@ export class ObjectEnvironment extends Environment {
 
   // https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#sec-object-environment-records-createmutablebinding-n-d
   createMutableBinding(name, d) {
-    assert(typeof name == "string");
-    assert(typeof d == "boolean");
+    assert(typeof name === "string");
+    assert(typeof d === "boolean");
 
     const bindingObject = this.#bindingObject;
 
@@ -74,7 +75,7 @@ export class ObjectEnvironment extends Environment {
 
   // https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#sec-object-environment-records-initializebinding-n-v
   initializeBinding(name, value) {
-    assert(typeof name == "string");
+    assert(typeof name === "string");
 
     this.setMutableBinding(name, value, false);
 
@@ -83,15 +84,15 @@ export class ObjectEnvironment extends Environment {
 
   // https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#sec-object-environment-records-setmutablebinding-n-v-s
   setMutableBinding(name, value, isStrict) {
-    assert(typeof name == "string");
-    assert(typeof isStrict == "boolean");
+    assert(typeof name === "string");
+    assert(typeof isStrict === "boolean");
 
     const bindingObject = this.#bindingObject;
     const stillExists = name in bindingObject;
 
     if (!stillExists && isStrict) {
       return throwCompletion(
-        new ReferenceError("can't set value of non-existing property")
+        new ReferenceError("can't set value of non-existing property"),
       );
     }
 
@@ -102,8 +103,8 @@ export class ObjectEnvironment extends Environment {
 
   // https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#sec-object-environment-records-createmutablebinding-n-d
   getBindingValue(name, isStrict) {
-    assert(typeof name == "string");
-    assert(typeof isStrict == "boolean");
+    assert(typeof name === "string");
+    assert(typeof isStrict === "boolean");
 
     const bindingObject = this.#bindingObject;
     const value = name in bindingObject;
@@ -114,7 +115,7 @@ export class ObjectEnvironment extends Environment {
       }
 
       return throwCompletion(
-        new ReferenceError("can't get value of non-existent property")
+        new ReferenceError("can't get value of non-existent property"),
       );
     }
 
@@ -123,7 +124,7 @@ export class ObjectEnvironment extends Environment {
 
   // https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#sec-object-environment-records-deletebinding-n
   deleteBinding(name) {
-    assert(typeof name == "string");
+    assert(typeof name === "string");
 
     const isDeletionSuccessful = delete this.#bindingObject[name];
 

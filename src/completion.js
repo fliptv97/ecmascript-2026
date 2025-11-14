@@ -29,7 +29,7 @@ export class Completion {
   constructor(type, value, target) {
     if (!Object.hasOwn(Type, type)) {
       throw new TypeError(
-        `expected type (${Object.keys(Type).join(", ")}), received: "${type}"`
+        `expected type (${Object.keys(Type).join(", ")}), received: "${type}"`,
       );
     }
 
@@ -37,7 +37,7 @@ export class Completion {
       throw new TypeError("value can't be of type Completion");
     }
 
-    if (typeof target != "string" && target !== EMPTY) {
+    if (typeof target !== "string" && target !== EMPTY) {
       throw new TypeError("target should be a string or an EMPTY");
     }
 

@@ -16,10 +16,10 @@ describe("FunctionEnvironment", () => {
       const opResult = envRec.bindThisValue(thisValue);
 
       assert(opResult instanceof Completion);
-      assert(opResult.type == CompletionType.NORMAL);
+      assert(opResult.type === CompletionType.NORMAL);
       assert(opResult.value === UNUSED);
 
-      assert(envRec.thisValue == thisValue);
+      assert(envRec.thisValue === thisValue);
     });
 
     it("should throw an error if 'this' is already bound", () => {
@@ -31,7 +31,7 @@ describe("FunctionEnvironment", () => {
       const opResult = envRec.bindThisValue({});
 
       assert(opResult instanceof Completion);
-      assert(opResult.type == CompletionType.THROW);
+      assert(opResult.type === CompletionType.THROW);
       assert(opResult.value instanceof ReferenceError);
     });
   });
@@ -48,7 +48,7 @@ describe("FunctionEnvironment", () => {
       },
     ];
 
-    for (let { functionThisMode, expected } of cases) {
+    for (const { functionThisMode, expected } of cases) {
       const fn = new Function_();
       fn.thisMode = functionThisMode;
 
@@ -56,7 +56,7 @@ describe("FunctionEnvironment", () => {
       const opResult = envRec.hasThisBinding();
 
       assert(opResult instanceof Completion);
-      assert(opResult.type == CompletionType.NORMAL);
+      assert(opResult.type === CompletionType.NORMAL);
       assert(opResult.value === expected);
     }
   });
@@ -80,7 +80,11 @@ describe("FunctionEnvironment", () => {
       },
     ];
 
-    for (let { functionThisMode, functionHomeObject, expected } of testCases) {
+    for (const {
+      functionThisMode,
+      functionHomeObject,
+      expected,
+    } of testCases) {
       const fn1 = new Function_();
       fn1.thisMode = functionThisMode;
       fn1.homeObject = functionHomeObject;
@@ -89,7 +93,7 @@ describe("FunctionEnvironment", () => {
       const opResult = envRec.hasSuperBinding();
 
       assert(opResult instanceof Completion);
-      assert(opResult.type == CompletionType.NORMAL);
+      assert(opResult.type === CompletionType.NORMAL);
       assert(opResult.value === expected);
     }
   });

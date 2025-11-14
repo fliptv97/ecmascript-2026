@@ -7,6 +7,7 @@ import { Environment } from "./environment.js";
 
 // https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#sec-declarative-environment-records
 export class DeclarativeEnvironment extends Environment {
+  // biome-ignore lint/correctness/noUnusedPrivateClassMembers: will be used in future
   #outerEnv;
 
   // https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#sec-newdeclarativeenvironment
@@ -22,21 +23,21 @@ export class DeclarativeEnvironment extends Environment {
 
   // https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#sec-declarative-environment-records-hasbinding-n
   hasBinding(name) {
-    assert(typeof name == "string");
+    assert(typeof name === "string");
 
     return normalCompletion(this._bindings.has(name));
   }
 
   // https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#sec-declarative-environment-records-createmutablebinding-n-d
   createMutableBinding(name, d) {
-    assert(typeof name == "string");
-    assert(typeof d == "boolean");
+    assert(typeof name === "string");
+    assert(typeof d === "boolean");
 
     assert(!this._bindings.has(name));
 
     const binding = new Binding(
       UNDEF,
-      BindingFlags.UNINITIALIZED | BindingFlags.MUTABLE
+      BindingFlags.UNINITIALIZED | BindingFlags.MUTABLE,
     );
 
     if (d) {
@@ -50,8 +51,8 @@ export class DeclarativeEnvironment extends Environment {
 
   // https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#sec-declarative-environment-records-createimmutablebinding-n-s
   createImmutableBinding(name, isStrict) {
-    assert(typeof name == "string");
-    assert(typeof isStrict == "boolean");
+    assert(typeof name === "string");
+    assert(typeof isStrict === "boolean");
 
     assert(!this._bindings.has(name));
 
@@ -68,7 +69,7 @@ export class DeclarativeEnvironment extends Environment {
 
   // https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#sec-declarative-environment-records-initializebinding-n-v
   initializeBinding(name, value) {
-    assert(typeof name == "string");
+    assert(typeof name === "string");
     assert(this._bindings.has(name));
 
     const binding = this._bindings.get(name);
@@ -83,8 +84,8 @@ export class DeclarativeEnvironment extends Environment {
 
   // https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#sec-declarative-environment-records-setmutablebinding-n-v-s
   setMutableBinding(name, value, isStrict) {
-    assert(typeof name == "string");
-    assert(typeof isStrict == "boolean");
+    assert(typeof name === "string");
+    assert(typeof isStrict === "boolean");
 
     if (!this._bindings.has(name)) {
       if (isStrict) {
@@ -120,8 +121,8 @@ export class DeclarativeEnvironment extends Environment {
 
   // https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#sec-declarative-environment-records-getbindingvalue-n-s
   getBindingValue(name, isStrict) {
-    assert(typeof name == "string");
-    assert(typeof isStrict == "boolean");
+    assert(typeof name === "string");
+    assert(typeof isStrict === "boolean");
 
     assert(this._bindings.has(name));
 

@@ -20,11 +20,3 @@ export class Environment {
 
   withBaseObject() {}
 }
-
-/* A Global Environment Record is used for Script global declarations.
-It does not have an outer environment; its [[OuterEnv]] is null.
-It may be prepopulated with identifier bindings and it includes an associated
-global object whose properties provide some of the global environment's
-identifier bindings. As ECMAScript code is executed, additional properties
-may be added to the global object and the initial properties may be modified. */
-class GlobalEnvironment extends Environment {}
