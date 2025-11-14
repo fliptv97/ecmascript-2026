@@ -6,5 +6,8 @@
   "type": "module",
   "scripts": {
     "test": "node --test"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.3.5"
   }
 }

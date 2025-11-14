@@ -14,7 +14,7 @@ describe("DeclarativeEnvironment", () => {
     const opResult = envRec.createMutableBinding(ident, false);
 
     assert(opResult instanceof Completion);
-    assert(opResult.type == CompletionType.NORMAL);
+    assert(opResult.type === CompletionType.NORMAL);
     assert(opResult.value === UNUSED);
 
     assert(envRec._bindings.size === 1);

@@ -14,7 +14,7 @@ describe("ObjectEnvironment", () => {
       const opResult = envRec.hasBinding(name);
 
       assert(opResult instanceof Completion);
-      assert(opResult.type == CompletionType.NORMAL);
+      assert(opResult.type === CompletionType.NORMAL);
       assert(opResult.value === false);
     });
 
@@ -27,7 +27,7 @@ describe("ObjectEnvironment", () => {
       const opResult = envRec.hasBinding(name);
 
       assert(opResult instanceof Completion);
-      assert(opResult.type == CompletionType.NORMAL);
+      assert(opResult.type === CompletionType.NORMAL);
       assert(opResult.value === true);
     });
 
@@ -41,7 +41,7 @@ describe("ObjectEnvironment", () => {
         const opResult = envRec.hasBinding(name);
 
         assert(opResult instanceof Completion);
-        assert(opResult.type == CompletionType.NORMAL);
+        assert(opResult.type === CompletionType.NORMAL);
         assert(opResult.value === true);
       });
 
@@ -59,7 +59,7 @@ describe("ObjectEnvironment", () => {
         const opResult = envRec.hasBinding(name);
 
         assert(opResult instanceof Completion);
-        assert(opResult.type == CompletionType.NORMAL);
+        assert(opResult.type === CompletionType.NORMAL);
         assert(opResult.value === false);
       });
     });
@@ -70,7 +70,7 @@ describe("ObjectEnvironment", () => {
     const opResult = envRec.createMutableBinding(name, false);
 
     assert(opResult instanceof Completion);
-    assert(opResult.type == CompletionType.NORMAL);
+    assert(opResult.type === CompletionType.NORMAL);
     assert(opResult.value === UNUSED);
     assert(envRec.hasBinding(name).value);
   });
@@ -83,7 +83,7 @@ describe("ObjectEnvironment", () => {
     const opResult = envRec.initializeBinding(name, value);
 
     assert(opResult instanceof Completion);
-    assert(opResult.type == CompletionType.NORMAL);
+    assert(opResult.type === CompletionType.NORMAL);
     assert(opResult.value === UNUSED);
     assert(envRec.getBindingValue(name, true).value === value);
   });
@@ -99,7 +99,7 @@ describe("ObjectEnvironment", () => {
       const opResult = envRec.setMutableBinding(name, value, true);
 
       assert(opResult instanceof Completion);
-      assert(opResult.type == CompletionType.NORMAL);
+      assert(opResult.type === CompletionType.NORMAL);
       assert(opResult.value === UNUSED);
       assert(envRec.getBindingValue(name, true).value === value);
     });
@@ -109,9 +109,9 @@ describe("ObjectEnvironment", () => {
       const opResult = envRec.setMutableBinding(name, value, true);
 
       assert(opResult instanceof Completion);
-      assert(opResult.type == CompletionType.THROW);
+      assert(opResult.type === CompletionType.THROW);
       assert(
-        envRec.getBindingValue(name, true).value instanceof ReferenceError
+        envRec.getBindingValue(name, true).value instanceof ReferenceError,
       );
     });
 
@@ -120,7 +120,7 @@ describe("ObjectEnvironment", () => {
       const opResult = envRec.setMutableBinding(name, value, false);
 
       assert(opResult instanceof Completion);
-      assert(opResult.type == CompletionType.NORMAL);
+      assert(opResult.type === CompletionType.NORMAL);
       assert(opResult.value === UNUSED);
       assert(envRec.getBindingValue(name, true).value === value);
     });
@@ -132,7 +132,7 @@ describe("ObjectEnvironment", () => {
       const opResult = envRec.getBindingValue(name, false);
 
       assert(opResult instanceof Completion);
-      assert(opResult.type == CompletionType.NORMAL);
+      assert(opResult.type === CompletionType.NORMAL);
       assert(opResult.value === undefined);
     });
 
@@ -141,7 +141,7 @@ describe("ObjectEnvironment", () => {
       const opResult = envRec.getBindingValue(name, true);
 
       assert(opResult instanceof Completion);
-      assert(opResult.type == CompletionType.THROW);
+      assert(opResult.type === CompletionType.THROW);
       assert(opResult.value instanceof ReferenceError);
     });
 
@@ -154,7 +154,7 @@ describe("ObjectEnvironment", () => {
       const opResult = envRec.getBindingValue(name, true);
 
       assert(opResult instanceof Completion);
-      assert(opResult.type == CompletionType.NORMAL);
+      assert(opResult.type === CompletionType.NORMAL);
       assert(opResult.value === value);
     });
   });
@@ -169,7 +169,7 @@ describe("ObjectEnvironment", () => {
     const opResult = envRec.deleteBinding(name);
 
     assert(opResult instanceof Completion);
-    assert(opResult.type == CompletionType.NORMAL);
+    assert(opResult.type === CompletionType.NORMAL);
     assert(opResult.value === true);
     assert(!envRec.hasBinding(name).value);
   });

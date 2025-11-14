@@ -15,18 +15,19 @@ export class FunctionEnvironment extends DeclarativeEnvironment {
   #functionObject;
   #thisBindingStatus;
   #thisValue;
+  // biome-ignore lint/correctness/noUnusedPrivateClassMembers: will be used in future
   #newTarget;
 
   // https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#sec-newfunctionenvironment
   constructor(F, newTarget) {
     assert(F instanceof Function_);
-    assert(typeof newTarget == "object" || newTarget === undefined);
+    assert(typeof newTarget === "object" || newTarget === undefined);
 
     super(F.environment);
 
     this.#functionObject = F;
     this.#thisBindingStatus =
-      F.thisMode == FunctionThisMode.LEXICAL
+      F.thisMode === FunctionThisMode.LEXICAL
         ? ThisBindingStatus.LEXICAL
         : ThisBindingStatus.UNINITIALIZED;
     this.#newTarget = newTarget;
@@ -38,9 +39,9 @@ export class FunctionEnvironment extends DeclarativeEnvironment {
 
   // https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#sec-bindthisvalue
   bindThisValue(value) {
-    assert(this.#thisBindingStatus != ThisBindingStatus.LEXICAL);
+    assert(this.#thisBindingStatus !== ThisBindingStatus.LEXICAL);
 
-    if (this.#thisBindingStatus == ThisBindingStatus.INITIALIZED) {
+    if (this.#thisBindingStatus === ThisBindingStatus.INITIALIZED) {
       return throwCompletion(new ReferenceError());
     }
 
@@ -53,7 +54,7 @@ export class FunctionEnvironment extends DeclarativeEnvironment {
   // https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#sec-function-environment-records-hasthisbinding
   hasThisBinding() {
     return normalCompletion(
-      this.#thisBindingStatus !== ThisBindingStatus.LEXICAL
+      this.#thisBindingStatus !== ThisBindingStatus.LEXICAL,
     );
   }
 
@@ -85,7 +86,7 @@ export class FunctionEnvironment extends DeclarativeEnvironment {
       return undefined;
     }
 
-    assert(typeof home == "object");
+    assert(typeof home === "object");
 
     return home.getPrototypeOf();
   }

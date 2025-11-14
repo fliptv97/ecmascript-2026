@@ -17,8 +17,8 @@ describe("ModuleEnvironment", () => {
       const opResult = envRec.getBindingValue(name, true);
 
       assert(opResult instanceof Completion);
-      assert(opResult.type == CompletionType.NORMAL);
-      assert(opResult.value == value);
+      assert(opResult.type === CompletionType.NORMAL);
+      assert(opResult.value === value);
     });
 
     it("should return indirectly bound value", () => {
@@ -38,8 +38,8 @@ describe("ModuleEnvironment", () => {
       const opResult = targetEnvRec.getBindingValue(targetName, true);
 
       assert(opResult instanceof Completion);
-      assert(opResult.type == CompletionType.NORMAL);
-      assert(opResult.value == sourceValue);
+      assert(opResult.type === CompletionType.NORMAL);
+      assert(opResult.value === sourceValue);
     });
 
     it("should throw an error if value is not initialized", () => {
@@ -51,7 +51,7 @@ describe("ModuleEnvironment", () => {
       const opResult = envRec.getBindingValue(name, true);
 
       assert(opResult instanceof Completion);
-      assert(opResult.type == CompletionType.THROW);
+      assert(opResult.type === CompletionType.THROW);
       assert(opResult.value instanceof ReferenceError);
     });
   });

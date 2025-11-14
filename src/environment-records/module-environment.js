@@ -9,10 +9,10 @@ import { DeclarativeEnvironment } from "./declarative-environment.js";
 // https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#sec-module-environment-records
 export class ModuleEnvironment extends DeclarativeEnvironment {
   getBindingValue(name, isStrict) {
-    assert(typeof name == "string");
-    assert(typeof isStrict == "boolean");
+    assert(typeof name === "string");
+    assert(typeof isStrict === "boolean");
 
-    assert(isStrict == true);
+    assert(isStrict === true);
     assert(this._bindings.has(name));
 
     const binding = this._bindings.get(name);
@@ -20,7 +20,7 @@ export class ModuleEnvironment extends DeclarativeEnvironment {
     if (binding instanceof IndirectBinding) {
       const targetEnv = binding.moduleRecord.environment;
 
-      if (targetEnv == EMPTY) {
+      if (targetEnv === EMPTY) {
         return throwCompletion(new ReferenceError());
       }
 
@@ -49,9 +49,9 @@ export class ModuleEnvironment extends DeclarativeEnvironment {
 
   // https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#sec-createimportbinding
   createImportBinding(name, moduleRecord, name2) {
-    assert(typeof name == "string");
+    assert(typeof name === "string");
     assert(moduleRecord instanceof Module);
-    assert(typeof name2 == "string");
+    assert(typeof name2 === "string");
 
     assert(!this._bindings.has(name));
 
