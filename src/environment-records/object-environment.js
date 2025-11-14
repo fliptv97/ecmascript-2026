@@ -108,7 +108,7 @@ export class ObjectEnvironment extends Environment {
     const bindingObject = this.#bindingObject;
     const value = name in bindingObject;
 
-    if (value == false) {
+    if (!value) {
       if (!isStrict) {
         return normalCompletion(undefined);
       }
