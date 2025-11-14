@@ -72,11 +72,14 @@ describe("ObjectEnvironment", () => {
     assert(opResult instanceof Completion);
     assert(opResult.type == CompletionType.NORMAL);
     assert(opResult.value === UNUSED);
-    assert(envRec.hasBinding(name));
+    assert(envRec.hasBinding(name).value);
   });
 
   it('should properly implement "initializeBinding"', () => {
     const envRec = new ObjectEnvironment({}, false, null);
+
+    envRec.createMutableBinding(name, false);
+
     const opResult = envRec.initializeBinding(name, value);
 
     assert(opResult instanceof Completion);
@@ -161,7 +164,7 @@ describe("ObjectEnvironment", () => {
 
     envRec.createMutableBinding(name, true);
 
-    assert(envRec.hasBinding(name));
+    assert(envRec.hasBinding(name).value);
 
     const opResult = envRec.deleteBinding(name);
 
