@@ -28,6 +28,10 @@ export class ObjectEnvironment extends Environment {
     this.#outerEnv = outerEnv;
   }
 
+  get bindingObject() {
+    return this.#bindingObject;
+  }
+
   // https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#sec-object-environment-records-hasbinding-n
   hasBinding(name) {
     assert(typeof name === "string");
